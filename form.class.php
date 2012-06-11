@@ -96,7 +96,7 @@
 
 			$token = $this->crsf_token();
 			$html  = '<form action="' . $this->form_action . '" class="' . $this->form_class . '" method="' . $this->form_method . '" enctype="enctype/form-data">';
-			$html .= '<input type="hidden" value="' . $token . '" />';
+			$html .= '<input name="' . $this->token_session_name . '"type="hidden" value="' . $token . '" />';
 
 			foreach ($this->fields as $name => $element) {
 				if (is_object($element)) {
@@ -111,6 +111,7 @@
 
 			return $html;
 		}
+
 
 		/*
 		 * Create token session
@@ -140,16 +141,16 @@
 		 * //WTD check if the session is started
 		 *
 		 */
-		public function is_token_valid()
+		static public function is_token_valid($method = 'POST')
 		{
-			if ($this->form_method === 'POST') {
-				if ($_POST[$this->token_session_name] == $_SESSION[$this->token_session_name]) {
+			if ($method === 'POST') {
+				if ($_POST[self::$token_session_name] == $_SESSION[self::$token_session_name]) {
 					return TRUE;
 				} else {
 					return FALSE;
 				}
 			} else {
-				if ($_GET[$this->token_session_name] == $_SESSION[$this->token_session_name]) {
+				if ($_GET[self::$token_session_name] == $_SESSION[self::$token_session_name]) {
 					return TRUE;
 				} else {
 					return FALSE;
@@ -251,6 +252,7 @@
 	{
 		protected $placeholder, $max_length, $value;
 		protected $field_type = 'text';
+		protected $prepended, $appeneded;
 
 
 		/*
@@ -265,11 +267,12 @@
 			$this->value       = $value;
 		}
 
+
 		/*
-		 * Render
-		 * @oa	Will
-		 *
-		 */
+		   * Render
+		   * @oa	Will
+		   *
+		   */
 		public function render($name)
 		{
 			parent::render($name);
@@ -277,6 +280,7 @@
 			if ($this->label) {
 				$this->html = $this->label();
 			}
+
 
 			if ($this->placeholder) {
 				$this->element_attributes .= ' placeholder="' . $this->placeholder . '"';
@@ -289,9 +293,29 @@
 				$this->element_attributes .= ' maxlength= "' . $this->max_length . '"';
 			}
 
+			if ($this->prepended || $this->appeneded) {
+				$div_class = '';
+				if ($this->prepended) {
+					$div_class .= ' input-prepend';
+				}
+				if ($this->appeneded) {
+					$div_class .= ' input-append';
+				}
+				$this->html .= '<div class="' . $div_class . '">';
+			}
+			if ($this->prepended) {
+				$this->html .= '<span class="add-on">' . $this->prepended . '</span>';
+			}
 
 			$this->html .= '<input name="' . $name . '" type="' . $this->field_type . '" ' . $this->element_attributes . ' />';
 
+			if ($this->appeneded) {
+				$this->html .= '<span class="add-on">' . $this->appeneded . '</span>';
+			}
+
+			if ($this->prepended || $this->appeneded) {
+				$this->html .= '</div>';
+			}
 			return $this->html;
 
 		}
