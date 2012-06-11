@@ -379,7 +379,8 @@
 		 */
 		public function render($name)
 		{
-			$html = '<select name ="' . $name . '"' . $this->element_attributes . ' >';
+			$html = $this->label();
+			$html .= '<select name ="' . $name . '"' . $this->element_attributes . ' >';
 
 			foreach ($this->options as $key => $option) {
 
