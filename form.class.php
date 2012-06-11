@@ -45,7 +45,7 @@
 
 		private $form_action, $form_method, $form_class;
 		private $fields;
-		private $token_session_name;
+		private static $token_session_name = 'formstrap_token';
 
 		/*
 		 * Constructor
@@ -96,7 +96,7 @@
 
 			$token = $this->crsf_token();
 			$html  = '<form action="' . $this->form_action . '" class="' . $this->form_class . '" method="' . $this->form_method . '" enctype="enctype/form-data">';
-			$html .= '<input name="' . $this->token_session_name . '"type="hidden" value="' . $token . '" />';
+			$html .= '<input name="' . self::$token_session_name . '"type="hidden" value="' . $token . '" />';
 
 			foreach ($this->fields as $name => $element) {
 				if (is_object($element)) {
@@ -129,7 +129,7 @@
 				$code .= substr($chars, rand() % strlen($chars), 1);
 			}
 
-			$_SESSION[$this->token_session_name] = $code;
+			$_SESSION[self::$token_session_name] = $code;
 
 			return $code;
 		}
