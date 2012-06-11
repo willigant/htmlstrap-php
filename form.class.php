@@ -210,7 +210,8 @@
 		 * Add class
 		 * @oa	Will
 		 */
-		protected function add_class($class) {
+		protected function add_class($class)
+		{
 			$this->class .= " $class";
 		}
 
@@ -425,16 +426,19 @@
 	{
 
 		protected $type = 'button';
-		protected $text,$theme,$size,$icon;
+		protected $text, $theme, $size, $icon;
+		protected $tag_type;
 
 		/*
 		   * Construct
 		   * @oa Will
 		   */
-		public function __construct($text, $theme = 'default', $size = 'default',$icon = FALSE)
+		public function __construct($text, $theme = 'default', $size = 'default', $icon = FALSE)
 		{
-			$this->text = $text;
-			$this->theme = ''
+			$this->text  = $text;
+			$this->theme = $theme;
+			$this->size  = $size;
+			$this->icon  = $icon;
 
 		}
 
@@ -444,12 +448,41 @@
 		 */
 		public function render($name)
 		{
-			switch ($this->type) {
-				default:
-				case 'submit':
+			$this->add_class('btn');
 
+			if ($this->theme != 'default') {
+				$this->add_class('btn-' . $this->theme);
+			}
+
+			if ($this->size != 'default') {
+				$this->add_class('btn-' . $this->size);
+			}
+
+			parent::render($name);
+
+			switch ($this->tag_type) {
+				default:
+				case 'a':
+
+					break;
+				case 'input':
+					$this->html = '<input ' . $this->element_attributes . 'type ="' . $this->type . '" value="' . $this->text . '" />';
 					break;
 			}
 
+			return $this->html;
 		}
 	}
+
+	/*
+	  * Submit
+	  * @oa	Will
+	  *
+	  */
+	class submit extends button
+	{
+		protected $type = 'submit';
+		protected $tag_type = 'input';
+	}
+
+
