@@ -66,6 +66,7 @@
 			}
 			$this->form_class  = $form_style;
 			$this->form_method = strtoupper($method);
+			$this->form_action = $action;
 		}
 
 		/*
@@ -94,7 +95,7 @@
 		{
 
 			$token = $this->crsf_token();
-			$html  = '<form class="' . $this->form_class . '" method="' . $this->form_method . '" enctype="enctype/form-data">';
+			$html  = '<form action="' . $this->form_action . '" class="' . $this->form_class . '" method="' . $this->form_method . '" enctype="enctype/form-data">';
 			$html .= '<input type="hidden" value="' . $token . '" />';
 
 			foreach ($this->fields as $name => $element) {
@@ -248,7 +249,7 @@
 
 	class text extends element
 	{
-		protected $max_length, $value;
+		protected $placeholder, $max_length, $value;
 		protected $field_type = 'text';
 
 
@@ -256,11 +257,12 @@
 		   * Construct
 		   * @oa	Will
 		   */
-		public function __construct($label, $max_length = FALSE, $value = FALSE)
+		public function __construct($label, $placeholder = FALSE, $max_length = FALSE, $value = FALSE)
 		{
-			$this->label      = $label;
-			$this->max_length = $max_length;
-			$this->value      = $value;
+			$this->label       = $label;
+			$this->placeholder = $placeholder;
+			$this->max_length  = $max_length;
+			$this->value       = $value;
 		}
 
 		/*
@@ -274,6 +276,10 @@
 
 			if ($this->label) {
 				$this->html = $this->label();
+			}
+
+			if ($this->placeholder) {
+				$this->element_attributes .= ' placeholder="' . $this->placeholder . '"';
 			}
 
 			if ($this->value) {
@@ -323,9 +329,9 @@
 		   * Construct
 		   * @oa	Will
 		   */
-		public function __construct($label, $max_length = FALSE, $value = FALSE)
+		public function __construct($label, $placeholder = FALSE, $max_length = FALSE, $value = FALSE)
 		{
-			parent::__construct($label, $max_length, $value);
+			parent::__construct($label, $placeholder, $max_length, $value);
 			$this->field_type = 'password';
 		}
 	}
