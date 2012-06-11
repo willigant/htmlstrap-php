@@ -106,7 +106,7 @@
 				}
 			}
 
-			$html .='</form>';
+			$html .= '</form>';
 
 			return $html;
 		}
@@ -229,6 +229,9 @@
 				$this->element_attributes .= ' tabindex="' . $this->tabindex . '"';
 			}
 
+			if ($this->disabled) {
+				$this->element_attributes .= ' disabled="disabled"';
+			}
 		}
 
 
@@ -270,9 +273,7 @@
 			if ($this->max_length) {
 				$this->element_attributes .= ' maxlength= "' . $this->max_length . '"';
 			}
-			if ($this->disabled) {
-				$this->element_attributes .= ' disabled="disabled"';
-			}
+
 
 			$this->html .= '<input name="' . $name . '" type="' . $this->field_type . '" ' . $this->element_attributes . ' />';
 
@@ -394,7 +395,7 @@
 					$value = $key;
 				}
 
-				$option_attributes .= ' value="' .$value . '"';
+				$option_attributes .= ' value="' . $value . '"';
 				$html .= "<option $option_attributes >" . $label . '</option>';
 			}
 
@@ -403,4 +404,30 @@
 			return $html;
 		}
 
+	}
+
+	/*
+	 * Buttons
+	 * @oa	Will
+	 *
+	 */
+	class button extends element
+	{
+
+		/*
+		 * Construct
+		 * @oa Will
+		 */
+		public function __construct($) {
+
+		}
+
+		/*
+		 * Render
+		 * @oa	Will
+		 */
+		public function render($name)
+		{
+
+		}
 	}
