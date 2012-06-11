@@ -252,7 +252,7 @@
 	{
 		protected $placeholder, $max_length, $value;
 		protected $field_type = 'text';
-		protected $prepended, $appeneded;
+		protected $prepended, $appended;
 
 
 		/*
@@ -267,6 +267,21 @@
 			$this->value       = $value;
 		}
 
+		/*
+		 * Prepend
+		 * @oa	Will
+		 */
+		public function prepend($text) {
+			$this->prepended = $text;
+		}
+
+		/*
+		 * Append
+		 * @oa	Will
+		 */
+		public function append($text) {
+			$this->appended = $text;
+		}
 
 		/*
 		   * Render
@@ -293,12 +308,12 @@
 				$this->element_attributes .= ' maxlength= "' . $this->max_length . '"';
 			}
 
-			if ($this->prepended || $this->appeneded) {
+			if ($this->prepended || $this->appended) {
 				$div_class = '';
 				if ($this->prepended) {
 					$div_class .= ' input-prepend';
 				}
-				if ($this->appeneded) {
+				if ($this->appended) {
 					$div_class .= ' input-append';
 				}
 				$this->html .= '<div class="' . $div_class . '">';
@@ -309,11 +324,11 @@
 
 			$this->html .= '<input name="' . $name . '" type="' . $this->field_type . '" ' . $this->element_attributes . ' />';
 
-			if ($this->appeneded) {
-				$this->html .= '<span class="add-on">' . $this->appeneded . '</span>';
+			if ($this->appended) {
+				$this->html .= '<span class="add-on">' . $this->appended . '</span>';
 			}
 
-			if ($this->prepended || $this->appeneded) {
+			if ($this->prepended || $this->appended) {
 				$this->html .= '</div>';
 			}
 			return $this->html;
