@@ -106,6 +106,8 @@
 				}
 			}
 
+			$html .='</form>';
+
 			return $html;
 		}
 
@@ -331,7 +333,9 @@
 		 * Construct
 		 * @oa	Will
 		 *
-		 * options ->array
+		 * options is either an array of
+		 * value => label pairs
+		 * or an array of option arrays with
 		 * 	[label]
 		 * 	[value]
 		 * 	[attributes] ->array
@@ -361,35 +365,42 @@
 		{
 			$html = '<select name ="' . $name . '"' . $this->element_attributes . ' >';
 
-			foreach ($this->options as $option) {
+			foreach ($this->options as $key => $option) {
 
 				$option_attributes = '';
 
-				if (isset($option['attributes'])) {
-					foreach ($option['attributes'] as $key => $attribute) {
-						$option_attributes .= ' ' . $key . '="' . $attribute . '"';
+				if (is_array($option)) {
 
+					if (isset($option['attributes'])) {
+						foreach ($option['attributes'] as $key => $attribute) {
+							$option_attributes .= ' ' . $key . '="' . $attribute . '"';
+						}
 					}
-				}
 
-				if(!isset($option['value'])) {
-					throw new \Exception('All options need to have a value');
+					if (!isset($option['value'])) {
+						throw new \Exception('All options need to have a value');
+					} else {
+						$value = $option['value'];
+					}
+
+					if (!isset($option['label'])) {
+						$option['label'] = $option['value'];
+					}
+
+					$label = $option['label'];
+
 				} else {
-					$option_attributes .=' value="'.$option['value'].'"';
+					$label = $option;
+					$value = $key;
 				}
 
-				if (!isset($option['label'])) {
-					$option['label'] = $option['value'];
-				}
-
-				$html .= "<option $option_attributes >".$option['label'].'</option>';
-
+				$option_attributes .= ' value="' .$value . '"';
+				$html .= "<option $option_attributes >" . $label . '</option>';
 			}
 
 			$html .= '</select>';
 
 			return $html;
-
 		}
 
 	}
