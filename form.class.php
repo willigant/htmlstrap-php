@@ -96,9 +96,10 @@
 			$html  = '<form class="' . $this->form_class . '" method="' . $this->form_method . '" enctype="enctype/form-data">';
 			$html .= '<input type="hidden" value="' . $token . '" />';
 
-			foreach ($this->fields as $key => $element) {
+			foreach ($this->fields as $name => $element) {
 				if (is_object($element)) {
-					$html .= $element->render();
+					$element->element_name($name);
+					$html .= $element->render($name);
 				} elseif (is_string($element)) {
 					$html .= $element;
 				}
@@ -155,18 +156,34 @@
 	}
 
 	/*
-	 * Input class
+	 * All form elements
 	 * @oa Will
 	 *
+	 *	//WBN add mouseevents / handlers
 	 *
 	 */
-	abstract class form_element
+	abstract class element
 	{
-		protected $class, $style, $value, $tabindex, $title, $id;
-		protected $label, $label_class, $label_style, $label_id;
+		public $class, $style, $tabindex, $id;
+		protected $element_attributes = '';
+		protected $element_name;
+
+		protected $label;
+		public $label_id = FALSE;
+		public $label_stlye = FALSE;
+		public $label_class = FALSE;
+
 		protected $html = '';
 		protected $disabled = FALSE;
 
+		/*
+		 * Set input name
+		 * @oa	Will
+		 *
+		 */
+		public function element_name($name) {
+			$this->element_name = $name;
+		}
 
 		/*
 		   * Create label
@@ -174,7 +191,13 @@
 		   */
 		protected function label()
 		{
-			$html = "<label class=\"$this->label_class\">$this->label</label>";
+			$label_attributes = ' for="'.$this->element_name.'"';
+
+			if ($this->label_class) {
+				$label_attributes .= ' class="' . $this->label_class . '"';
+			}
+
+			$html = "<label$label_attributes>$this->label</label>";
 			return $html;
 		}
 
@@ -182,20 +205,35 @@
 		 * Render
 		 * @oa	Will
 		 *
-		 * return the label and the input with whatever options
+		 *  prepare the standard attributes for the element
 		 *
 		 */
-		abstract function render();
+		function render($name)
+		{
+
+			if ($this->class) {
+				$this->element_attributes .= ' class="' . $this->class . '"';
+			}
+			if ($this->style) {
+				$this->element_attributes .= ' style="' . $this->style . '"';
+			}
+			if ($this->id) {
+				$this->element_attributes .= ' id="' . $this->id . '"';
+			}
+			if ($this->tabindex) {
+				$this->element_attributes .= ' tabindex="' . $this->tabindex . '"';
+			}
+
+		}
 
 
 	}
 
-	class text extends form_element
+	class text extends element
 	{
-		protected $label;
 		protected $max_length, $value;
 		protected $field_type = 'text';
-		public $label_class;
+
 
 		/*
 		   * Construct
@@ -212,30 +250,67 @@
 		 * Render
 		 * @oa	Will
 		 *
-		 * //WTD move attribute checking to it's own function so it can be reused
-		 *
 		 */
-		public function render()
+		public function render($name)
 		{
-			$value_string      = '';
-			$max_length_string = '';
-			$disabled_string   = '';
+			parent::render($name);
 
 			if ($this->label) {
 				$this->html = $this->label();
 			}
 
 			if ($this->value) {
-				$value_string = ' value = "' . $this->value . '"';
+				$this->element_attributes .= ' value= "' . $this->value . '"';
 			}
 			if ($this->max_length) {
-				$max_length_string = ' maxlength = "' . $this->max_length . '"';
+				$this->element_attributes .= ' maxlength= "' . $this->max_length . '"';
+			}
+			if ($this->disabled) {
+				$this->element_attributes .= ' disabled="disabled"';
 			}
 
-			$this->html .= '<input type="' . $this->field_type . '" ' . $value_string . $max_length_string . $disabled_string.' />';
+			$this->html .= '<input name="' . $name . '" type="' . $this->field_type . '" ' . $this->element_attributes . ' />';
 
 			return $this->html;
 
 		}
 
+	}
+
+		/*
+	 * Hidden Elements
+	 * @oa	Will
+	 *
+	 */
+	class hidden extends text
+	{
+
+		/*
+		   * Construct
+		   * @oa	Will
+		   */
+		public function __construct($value)
+		{
+			$this->value      = $value;
+			$this->field_type = 'hidden';
+		}
+	}
+
+	/*
+	 * Password Elements
+	 * @oa	Will
+	 *
+	 */
+	class password extends text
+	{
+
+		/*
+		   * Construct
+		   * @oa	Will
+		   */
+		public function __construct($label, $max_length = FALSE, $value = FALSE)
+		{
+			parent::__construct($label,$max_length,$value);
+			$this->field_type = 'password';
+		}
 	}
