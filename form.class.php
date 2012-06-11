@@ -37,7 +37,8 @@
 	namespace formstrap;
 
 		//WWBN allow different enctypes
-	//WBN create quick forms like "search box" or "email_pw_login" w/ different options
+		//WBN create quick forms like "search box" or "email_pw_login" w/ different options
+	//WBN add control groups for horizontal forms
 
 	class form
 	{
@@ -324,11 +325,17 @@
 	abstract class option extends element
 	{
 
-		protected $options;
+		protected $options = array();
 
 		/*
 		 * Construct
 		 * @oa	Will
+		 *
+		 * options ->array
+		 * 	[label]
+		 * 	[value]
+		 * 	[attributes] ->array
+		 *
 		 */
 		public function __construct($label, $options)
 		{
@@ -343,5 +350,46 @@
 	 */
 	class select extends option
 	{
+		/*
+		 * Render
+		 * @oa Will
+		 *
+		 * //WBN sanity check to see if there are any options
+		 *
+		 */
+		public function render($name)
+		{
+			$html = '<select name ="' . $name . '"' . $this->element_attributes . ' >';
+
+			foreach ($this->options as $option) {
+
+				$option_attributes = '';
+
+				if (isset($option['attributes'])) {
+					foreach ($option['attributes'] as $key => $attribute) {
+						$option_attributes .= ' ' . $key . '="' . $attribute . '"';
+
+					}
+				}
+
+				if(!isset($option['value'])) {
+					throw new \Exception('All options need to have a value');
+				} else {
+					$option_attributes .=' value="'.$option['value'].'"';
+				}
+
+				if (!isset($option['label'])) {
+					$option['label'] = $option['value'];
+				}
+
+				$html .= "<option $option_attributes >".$option['label'].'</option>';
+
+			}
+
+			$html .= '</select>';
+
+			return $html;
+
+		}
 
 	}
