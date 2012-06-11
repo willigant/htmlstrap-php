@@ -207,6 +207,14 @@
 		}
 
 		/*
+		 * Add class
+		 * @oa	Will
+		 */
+		protected function add_class($class) {
+			$this->class .= " $class";
+		}
+
+		/*
 		 * Render
 		 * @oa	Will
 		 *
@@ -410,15 +418,23 @@
 	 * Buttons
 	 * @oa	Will
 	 *
+	 * //WWBN add button groups
+	 *
 	 */
 	class button extends element
 	{
 
+		protected $type = 'button';
+		protected $text,$theme,$size,$icon;
+
 		/*
-		 * Construct
-		 * @oa Will
-		 */
-		public function __construct($) {
+		   * Construct
+		   * @oa Will
+		   */
+		public function __construct($text, $theme = 'default', $size = 'default',$icon = FALSE)
+		{
+			$this->text = $text;
+			$this->theme = ''
 
 		}
 
@@ -428,6 +444,12 @@
 		 */
 		public function render($name)
 		{
+			switch ($this->type) {
+				default:
+				case 'submit':
+
+					break;
+			}
 
 		}
 	}
