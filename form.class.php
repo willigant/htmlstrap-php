@@ -160,6 +160,7 @@
 	 * @oa Will
 	 *
 	 *	//WBN add mouseevents / handlers
+	 *  //WBN add required / optional
 	 *
 	 */
 	abstract class element
@@ -181,7 +182,8 @@
 		 * @oa	Will
 		 *
 		 */
-		public function element_name($name) {
+		public function element_name($name)
+		{
 			$this->element_name = $name;
 		}
 
@@ -191,7 +193,7 @@
 		   */
 		protected function label()
 		{
-			$label_attributes = ' for="'.$this->element_name.'"';
+			$label_attributes = ' for="' . $this->element_name . '"';
 
 			if ($this->label_class) {
 				$label_attributes .= ' class="' . $this->label_class . '"';
@@ -206,7 +208,7 @@
 		 * @oa	Will
 		 *
 		 *  prepare the standard attributes for the element
-		 *
+		 * //WWBN move disabled to this one
 		 */
 		function render($name)
 		{
@@ -277,11 +279,11 @@
 
 	}
 
-		/*
-	 * Hidden Elements
-	 * @oa	Will
-	 *
-	 */
+	/*
+	  * Hidden Elements
+	  * @oa	Will
+	  *
+	  */
 	class hidden extends text
 	{
 
@@ -310,7 +312,36 @@
 		   */
 		public function __construct($label, $max_length = FALSE, $value = FALSE)
 		{
-			parent::__construct($label,$max_length,$value);
+			parent::__construct($label, $max_length, $value);
 			$this->field_type = 'password';
 		}
+	}
+
+	/*
+	 * Elements that have multiple options
+	 * @oa	Will
+	 */
+	abstract class option extends element
+	{
+
+		protected $options;
+
+		/*
+		 * Construct
+		 * @oa	Will
+		 */
+		public function __construct($label, $options)
+		{
+			$this->label   = $label;
+			$this->options = $options;
+		}
+	}
+
+	/*
+	 * Select
+	 * @oa Will
+	 */
+	class select extends option
+	{
+
 	}
