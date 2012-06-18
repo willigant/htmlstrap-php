@@ -40,10 +40,10 @@
 		//WBN create quick forms like "search box" or "email_pw_login" w/ different options
 	//WBN add control groups for horizontal forms
 
-	class form
+	class form extends html
 	{
 
-		private $form_action, $form_method, $form_class;
+		private $action, $method, $class;
 		private $fields;
 		private static $token_session_name = 'formstrap_token';
 
@@ -62,11 +62,12 @@
 			$this->fields = new \stdClass();
 
 			if ($well) {
-				$form_style .= ' well';
+				$this->add_attribute('class', 'well');
 			}
-			$this->form_class  = $form_style;
-			$this->form_method = strtoupper($method);
-			$this->form_action = $action;
+			$this->style($form_style);
+
+			$this->method = strtoupper($method);
+			$this->action = $action;
 		}
 
 		/*
@@ -85,17 +86,50 @@
 		}
 
 		/*
-		 * Render
-		 * @oa Will
-		 *
-		 * returns the HTML of the form
-		 *
-		 */
+		   * Change form style
+		   * @author Will
+		   */
+		public function style($style)
+		{
+			$form_styles = array(
+				'vertical', 'inline', 'search', 'horizontal'
+			);
+			foreach ($form_styles as $style) {
+				$this->remove_attribute('class', 'form-' . $style);
+			}
+			if (in_array($style, $form_styles)) {
+				$this->add_attribute('class', 'form-' . $style);
+			} else {
+				throw new \Exception('That form style does not exist');
+			}
+		}
+
+		/*
+		   * Well
+		   * @author will
+		   */
+		public function well($set = TRUE)
+		{
+			if ($set) {
+				$this->add_attribute('class','well');
+			} else {
+				$this->remove_attribute('class','well');
+			}
+		}
+
+		/*
+		   * Render
+		   * @oa Will
+		   *
+		   * returns the HTML of the form
+		   *
+		   */
 		public function render()
 		{
 
 			$token = $this->crsf_token();
-			$html  = '<form action="' . $this->form_action . '" class="' . $this->form_class . '" method="' . $this->form_method . '" enctype="enctype/form-data">';
+			$this->attributize('class');
+			$html = '<form action="' . $this->action . '" class="' . $this->class . '" method="' . $this->method . '" enctype="enctype/form-data">';
 			$html .= '<input name="' . self::$token_session_name . '"type="hidden" value="' . $token . '" />';
 
 			foreach ($this->fields as $name => $element) {
@@ -168,7 +202,7 @@
 	 *  //WBN add required / optional
 	 *
 	 */
-	abstract class element
+	abstract class element extends html
 	{
 		public $class, $style, $tabindex, $id;
 		protected $element_attributes = '';
@@ -208,31 +242,22 @@
 			return $html;
 		}
 
-		/*
-		 * Add class
-		 * @oa	Will
-		 */
-		protected function add_class($class)
-		{
-			$this->class .= " $class";
-		}
 
 		/*
-		 * Render
-		 * @oa	Will
-		 *
-		 *  prepare the standard attributes for the element
-		 * //WWBN move disabled to this one
-		 */
+		* Render
+		* @oa	Will
+		*
+		*  prepare the standard attributes for the element
+		*/
 		function render($name)
 		{
+			$this->attributize('class');
+			$this->attributize('style');
 
-			if ($this->class) {
-				$this->element_attributes .= ' class="' . $this->class . '"';
-			}
-			if ($this->style) {
-				$this->element_attributes .= ' style="' . $this->style . '"';
-			}
+
+			$this->element_attributes .= $this->class;
+			$this->element_attributes .= $this->style;
+
 			if ($this->id) {
 				$this->element_attributes .= ' id="' . $this->id . '"';
 			}
@@ -271,7 +296,8 @@
 		 * Prepend
 		 * @oa	Will
 		 */
-		public function prepend($text) {
+		public function prepend($text)
+		{
 			$this->prepended = $text;
 		}
 
@@ -279,7 +305,8 @@
 		 * Append
 		 * @oa	Will
 		 */
-		public function append($text) {
+		public function append($text)
+		{
 			$this->appended = $text;
 		}
 
@@ -531,4 +558,59 @@
 		protected $tag_type = 'input';
 	}
 
+
+	class html
+	{
+		/*
+		   * Create attribute string
+		   * @author Will
+		   *
+		   * @return string of the attribute
+		   * eg  class = "classname otherclass"
+		   */
+		protected function attributize($attribute, $data = FALSE)
+		{
+
+			if (!$data) {
+				$data = $this->$data;
+			}
+
+			if ($data) {
+				$string_to_return = ' ' . $attribute . '="';
+				if (is_string($data)) {
+					$string_to_return .= $data;
+				} elseif (is_array($data)) {
+					foreach ($data as $key => $value) {
+						$string_to_return .= ' ' . $value;
+					}
+				} else {
+					$this->$attribute = '';
+				}
+				$string_to_return .= '"';
+				$this->$attribute = $string_to_return;
+			} else {
+				$this->$attribute = '';
+			}
+		}
+
+		/*
+		 * Add attribute
+		 * @oa	Will
+		 */
+		protected function add_attribute($attribute_name, $attribute)
+		{
+			$this->$attribute_name[$attribute] .= $attribute;
+		}
+
+		/*
+		 * Remove attribute
+		 *
+		 */
+		protected function remove_attribute($attribute_name, $attribute)
+		{
+			if (isset($this->$attribute_name)) {
+				unset($this->$attribute_name[$attribute]);
+			}
+		}
+	}
 
