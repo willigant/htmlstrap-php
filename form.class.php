@@ -562,12 +562,16 @@
 	class html
 	{
 		/*
-		   * Create attribute string
-		   * @author Will
-		   *
-		   * @return string of the attribute
-		   * eg  class = "classname otherclass"
-		   */
+		 * Create attribute string
+		 * @author Will
+		 *
+		 * @return string of the attribute
+		 * eg  class = "classname otherclass"
+		 *
+		 * add ability to overwrite attribute name in string
+		 * eg change "form_class" to just "class"
+		 *
+		 */
 		protected function attributize($attribute, $data = FALSE)
 		{
 
