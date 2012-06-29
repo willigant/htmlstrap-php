@@ -38,19 +38,20 @@
 
 
         //KTD add ability to take away stripes or bordered
+            //->use remove_attribute function
         //KTD make stripped and bordered the default
         //KTD add comments to these functions
         public function striped()
         {
             $this->add_attribute('class','table-striped');
         }
-
         public function bordered()
         {
             $this->add_attribute('class','table-bordered');
         }
-
-        //KTD add condensed function
+        public function condensed(){
+            $this->add_attribute('class','table-condensed');
+        }
 
         /*
         * Render

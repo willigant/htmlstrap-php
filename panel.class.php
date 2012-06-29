@@ -29,8 +29,9 @@
         */
         public function render()
         {
+            $this->attributize('class');
 
-            $html = '<table class="' . $this->table_class . '">';
+            $html = '<table ' . $this->class . '>';
             foreach ($this->data as $key => $value) {
                 if (!in_array($key, $this->hidden_columns)) {
                     $html .= '<tr><th>' . $key . '</th>';
@@ -55,30 +56,18 @@
             throw new \Exception('Panels can not have a delete column yet.');
         }
 
-
+        /*
+         * Form
+         * @author      Khaliq
+         * @contributor Will
+         *
+         * //KTD add a form to the panel that is able to be saved to a model
+         *
+         *
+         */
         public function add_form()
         {
         }
-
-        private $form_action, $form_method, $form_class;
-
-//params should be update the form and what it
-
-        public function render2()
-        {
-            $html = '<form action="submit">';
-            $html .= '<table class="' . $this->table_class . '">';
-            foreach ($this->data as $key => $value) {
-                $html .= '<tr><th>' . $key . '</th>';
-                $html .= '<td><input type="text" name="' . $key . '" value="' . $value . '"</td></tr>';
-            }
-            $html .= '</table>';
-            $html .= '</form>';
-
-            return $html;
-        }
-
-
     }
 
 
