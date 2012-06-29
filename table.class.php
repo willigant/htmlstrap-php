@@ -18,10 +18,9 @@
 
     require_once 'html.class.php';
 
-    class table
+    class table extends html
     {
         protected $data;
-        protected $table_class = 'table ';
         protected $hidden_columns = array();
         protected $primary_key = 'id', $delete_col = FALSE, $delete_url = '';
 
@@ -34,6 +33,7 @@
         public function __construct($data)
         {
             $this->data = $data;
+            $this->add_attribute('class','table');
         }
 
 
@@ -42,12 +42,12 @@
         //KTD add comments to these functions
         public function striped()
         {
-            $this->table_class .= ' table-striped';
+            $this->add_attribute('class','table-striped');
         }
 
         public function bordered()
         {
-            $this->table_class .= ' table-bordered';
+            $this->add_attribute('class','table-bordered');
         }
 
         //KTD add condensed function
@@ -68,10 +68,10 @@
         */
         public function render()
         {
-
             $keys = $this->keys();
 
-            $html = '<table class="' . $this->table_class . '">';
+            $this->attributize('class');
+            $html = '<table ' . $this->class . '>';
             $html .= '<thead>';
 
             if ($this->delete_col) {
