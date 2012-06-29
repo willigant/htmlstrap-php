@@ -53,9 +53,16 @@
         }
 
         /*
-        * Add attribute
-        * @oa	Will
-        */
+         * Add attribute
+         * @oa	Will
+         *
+         * add to an array of what will be an html attribute string
+         *
+         * eg add 'class',' foo' and 'class','bar' and when you call attributize it will make it
+         * class ="foo bar"
+         *
+         *
+         */
         protected function add_attribute($attribute_name, $attribute)
         {
             if (is_array($this->$attribute_name)) {
@@ -67,9 +74,11 @@
         }
 
         /*
-        * Remove attribute
-        *
-        */
+         * Remove attribute
+         *
+         * removes specific attribute from created attribute array
+         *
+         */
         protected function remove_attribute($attribute_name, $attribute)
         {
             if (isset($this->$attribute_name[$attribute])) {
