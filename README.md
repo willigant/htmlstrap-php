@@ -1,4 +1,4 @@
-Formstrap-PHP
+HTMLStrap-PHP
 =============
 
-Probably should be HTMLstrap-PHP
+Quickly make Bootstrap html elements from common data types in PHP
