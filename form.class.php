@@ -35,13 +35,13 @@
     */
 
 
-    namespace formstrap;
+    namespace htmlstrap;
 
     require_once 'html.class.php';
 
-//WWBN allow different enctypes
-//WBN create quick forms like "search box" or "email_pw_login" w/ different options
-//WBN add control groups for horizontal forms
+    //WWBN allow different enctypes
+    //WBN create quick forms like "search box" or "email_pw_login" w/ different options
+    //WBN add control groups for horizontal forms
 
     class form extends html
     {
@@ -207,8 +207,8 @@
     * All form elements
     * @oa Will
     *
-    *	//WBN add mouseevents / handlers
-    *  //WBN add required / optional
+    * //WBN add mouseevents / handlers
+    * //WBN add required / optional
     *
     */
     abstract class element extends html
@@ -390,15 +390,16 @@
     */
     class textarea extends text
     {
-        public $rows,$cols;
-       /*
+        public $rows, $cols;
+
+        /*
         * Construct
         * @author Will
         */
         public function __construct($label, $value = FALSE)
         {
-            $this->label       = $label;
-            $this->value       = $value;
+            $this->label = $label;
+            $this->value = $value;
         }
 
         public function rendered_input($name)
@@ -410,7 +411,7 @@
             $this->attributize('rows');
             $this->attributize('columns');
 
-            return '<textarea name="' . $name . '" ' . $this->element_attributes . '>'.$this->value.'</textarea>';
+            return '<textarea name="' . $name . '" ' . $this->element_attributes . '>' . $this->value . '</textarea>';
         }
     }
 
@@ -585,7 +586,7 @@
             parent::render($name);
 
             if ($this->clear) {
-                $this->html .='<div>&nbsp;</div>';
+                $this->html .= '<div>&nbsp;</div>';
             }
 
             switch ($this->tag_type) {

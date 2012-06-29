@@ -7,7 +7,7 @@
      * when we are creating html elements, this is a good base class
      *
      */
-   namespace formstrap;
+   namespace htmlstrap;
 
     class html
     {
