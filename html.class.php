@@ -7,11 +7,13 @@
      * when we are creating html elements, this is a good base class
      *
      */
-   namespace htmlstrap;
+    namespace htmlstrap;
 
-    class html
+    abstract class html
     {
         protected $class, $style;
+        protected $attributes = '';
+        protected $html = '';
 
         /*
         * Create attribute string
@@ -93,7 +95,7 @@
         *
         * push onto array with associations
         */
-        private function array_push_associative(&$arr)
+        protected function array_push_associative(&$arr)
         {
             $args = func_get_args();
             foreach ($args as $arg) {
@@ -106,4 +108,6 @@
                 }
             }
         }
+
+        abstract function render();
     }
