@@ -194,10 +194,9 @@
         */
         static public function is_token_valid($method = 'POST')
         {
-            ppx($_SESSION);
             if ($method === 'POST') {
                 $token = $_POST[self::$token_session_name];
-                if ($_POST[$token] == $_SESSION[self::$token_session_name][$token]) {
+                if ($_POST[self::$token_session_name] == $_SESSION[self::$token_session_name][$token]) {
                     unset($_SESSION[self::$token_session_name][$token]);
                     return TRUE;
                 } else {
