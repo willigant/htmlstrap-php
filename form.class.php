@@ -48,7 +48,7 @@
 
         protected $action = FALSE, $method = FALSE, $class = FALSE;
         private $fields;
-        private static $token_session_name = 'formstrap_token';
+        private static $token_session_name = 'formstrap_token',$first_form_on_page = TRUE;
 
         /*
         * Constructor
@@ -172,7 +172,15 @@
                 $code .= substr($chars, rand() % strlen($chars), 1);
             }
 
-            $_SESSION[self::$token_session_name] = $code;
+            if(self::$first_form_on_page) {
+                self::$first_form_on_page = FALSE;
+                $_SESSION[self::$token_session_name] = array();
+            }
+
+            if (is_string($_SESSION[self::$token_session_name])) {
+                unset($_SESSION[self::$token_session_name]);
+            }
+            $_SESSION[self::$token_session_name][$code] = $code;
 
             return $code;
         }
@@ -186,14 +194,19 @@
         */
         static public function is_token_valid($method = 'POST')
         {
+            ppx($_SESSION);
             if ($method === 'POST') {
-                if ($_POST[self::$token_session_name] == $_SESSION[self::$token_session_name]) {
+                $token = $_POST[self::$token_session_name];
+                if ($_POST[$token] == $_SESSION[self::$token_session_name][$token]) {
+                    unset($_SESSION[self::$token_session_name][$token]);
                     return TRUE;
                 } else {
                     return FALSE;
                 }
             } else {
-                if ($_GET[self::$token_session_name] == $_SESSION[self::$token_session_name]) {
+                $token = $_GET[self::$token_session_name];
+                if ($token == $_SESSION[self::$token_session_name][$token]) {
+                    unset($_SESSION[self::$token_session_name][$token]);
                     return TRUE;
                 } else {
                     return FALSE;
