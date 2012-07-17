@@ -11,9 +11,9 @@
 
     abstract class html
     {
+        public $id;
         protected $class, $style;
-        protected $attributes = '';
-        protected $html = '';
+        protected $html = '', $attributes = '';
 
         /*
         * Create attribute string

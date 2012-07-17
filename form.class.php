@@ -38,6 +38,8 @@
     namespace htmlstrap;
 
     require_once 'html.class.php';
+    require_once 'element.class.php';
+    require_once 'button.class.php';
 
     //WWBN allow different enctypes
     //WBN create quick forms like "search box" or "email_pw_login" w/ different options
@@ -48,7 +50,7 @@
 
         protected $action = FALSE, $method = FALSE, $class = FALSE;
         private $fields;
-        private static $token_session_name = 'formstrap_token',$first_form_on_page = TRUE;
+        private static $token_session_name = 'formstrap_token', $first_form_on_page = TRUE;
 
         /*
         * Constructor
@@ -172,8 +174,8 @@
                 $code .= substr($chars, rand() % strlen($chars), 1);
             }
 
-            if(self::$first_form_on_page) {
-                self::$first_form_on_page = FALSE;
+            if (self::$first_form_on_page) {
+                self::$first_form_on_page            = FALSE;
                 $_SESSION[self::$token_session_name] = array();
             }
 
@@ -215,84 +217,6 @@
 
     }
 
-    /*
-    * All form elements
-    * @oa Will
-    *
-    * //WBN add mouseevents / handlers
-    * //WBN add required / optional
-    *
-    */
-    abstract class element extends html
-    {
-        public $class, $style, $tabindex, $id;
-        protected $element_attributes = '';
-        protected $element_name;
-
-        protected $label;
-        public $label_id = FALSE;
-        public $label_stlye = FALSE;
-        public $label_class = FALSE;
-
-        protected $html = '';
-        protected $disabled = FALSE;
-
-        /*
-        * Set input name
-        * @oa	Will
-        *
-        */
-        public function element_name($name)
-        {
-            $this->element_name = $name;
-        }
-
-        /*
-        * Create label
-        * @oa	Will
-        */
-        protected function label()
-        {
-            $label_attributes = ' for="' . $this->element_name . '"';
-
-            if ($this->label_class) {
-                $label_attributes .= ' class="' . $this->label_class . '"';
-            }
-
-            $html = "<label$label_attributes>$this->label</label>";
-            return $html;
-        }
-
-
-        /*
-        * Render
-        * @oa	Will
-        *
-        *  prepare the standard attributes for the element
-        */
-        function render($name)
-        {
-            $this->attributize('class');
-            $this->attributize('style');
-
-
-            $this->element_attributes .= $this->class;
-            $this->element_attributes .= $this->style;
-
-            if ($this->id) {
-                $this->element_attributes .= ' id="' . $this->id . '"';
-            }
-            if ($this->tabindex) {
-                $this->element_attributes .= ' tabindex="' . $this->tabindex . '"';
-            }
-
-            if ($this->disabled) {
-                $this->element_attributes .= ' disabled="disabled"';
-            }
-        }
-
-
-    }
 
     class text extends element
     {
@@ -550,82 +474,5 @@
         }
 
     }
-
-    /*
-    * Buttons
-    * @oa	Will
-    *
-    * //WWBN add button groups
-    *
-    */
-    class button extends element
-    {
-
-        protected $type = 'button';
-        protected $text, $theme, $size, $icon;
-        protected $tag_type;
-        public $clear = TRUE;
-
-        /*
-        * Construct
-        * @oa Will
-        */
-        public function __construct($text = 'Submit', $theme = 'default', $size = 'default', $icon = FALSE)
-        {
-            $this->text  = $text;
-            $this->theme = $theme;
-            $this->size  = $size;
-            $this->icon  = $icon;
-
-        }
-
-        /*
-        * Render
-        * @oa	Will
-        */
-        public function render($name)
-        {
-            $this->add_attribute('class', 'btn');
-
-            if ($this->theme != 'default') {
-                $this->add_attribute('class', 'btn-' . $this->theme);
-            }
-
-            if ($this->size != 'default') {
-                $this->add_attribute('class', 'btn-' . $this->size);
-            }
-
-            parent::render($name);
-
-            if ($this->clear) {
-                $this->html .= '<div>&nbsp;</div>';
-            }
-
-            switch ($this->tag_type) {
-                default:
-                case 'a':
-
-                    break;
-                case 'input':
-                    $this->html .= '<input ' . $this->element_attributes . 'type ="' . $this->type . '" value="' . $this->text . '" />';
-                    break;
-            }
-
-            return $this->html;
-        }
-    }
-
-    /*
-    * Submit
-    * @oa	Will
-    *
-    */
-    class submit extends button
-    {
-        protected $type = 'submit';
-        protected $tag_type = 'input';
-    }
-
-
 
 
