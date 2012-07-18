@@ -12,7 +12,7 @@
 
         protected $type = 'button';
         protected $text, $theme, $size, $icon;
-        protected $tag_type;
+        protected $tag_type = 'button';
         public $clear = TRUE;
 
         /*
@@ -53,10 +53,14 @@
             switch ($this->tag_type) {
                 default:
                 case 'a':
-
+                //WBN this is broken sort of, fix that ish
+                    $this->html .= '<a href="/" '. $this->element_attributes.'>'.$this->text.'</a>';
                     break;
                 case 'input':
                     $this->html .= '<input ' . $this->element_attributes . 'type ="' . $this->type . '" value="' . $this->text . '" />';
+                    break;
+                case 'button':
+                    $this->html .= '<button '.$this->element_attributes.' type ="'.$this->type.'" >'.$this->text.'</button>';
                     break;
             }
 

@@ -82,8 +82,10 @@
             $this->attributize('onClick');
 
 
+            ///WBN these should go in the attributize functions, right?
             $this->element_attributes .= $this->class;
             $this->element_attributes .= $this->style;
+            $this->element_attributes .= $this->onClick;
 
             if ($this->id) {
                 $this->element_attributes .= ' id="' . $this->id . '"';
