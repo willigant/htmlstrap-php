@@ -197,10 +197,16 @@
         static public function is_token_valid($method = 'POST')
         {
             if ($method === 'POST') {
+
                 $token = $_POST[self::$token_session_name];
-                if ($_POST[self::$token_session_name] == $_SESSION[self::$token_session_name][$token]) {
-                    unset($_SESSION[self::$token_session_name][$token]);
-                    return TRUE;
+                if (array_key_exists($token, $_SESSION[self::$token_session_name])) {
+                    if ($_POST[self::$token_session_name] == $_SESSION[self::$token_session_name][$token]) {
+                        unset($_SESSION[self::$token_session_name][$token]);
+                        return TRUE;
+                    } else {
+                        //double post
+                        return TRUE;
+                    }
                 } else {
                     return FALSE;
                 }
