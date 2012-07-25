@@ -454,6 +454,23 @@
     }
 
     /*
+    * Checkbox Elements
+    * @author Khaliq
+    */
+    class checkbox extends text
+    {
+        /*
+         * Contstruct
+         * @oa Khaliq
+         */
+        public function __construct($label)
+        {
+            $this->label      = $label;
+            $this->field_type = 'checkbox';
+        }
+    }
+
+    /*
     * Elements that have multiple options
     * @oa	Will
     */
