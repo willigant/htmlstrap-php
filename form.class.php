@@ -140,8 +140,8 @@
             $token = $this->crsf_token();
             $this->attributize('class');
 
-            $html = '<form action="' . $this->action . '" ' . $this->class . ' method="' . $this->method . '" enctype="enctype/form-data">';
-            $html .= '<input name="' . self::$token_session_name . '"type="hidden" value="' . $token . '" />';
+            $html = '<form action="' . $this->action . '" ' . $this->class . ' method="' . $this->method . '"  enctype="enctype/form-data">';
+            $html .= '<input id="' . self::$token_session_name . '" name="' . self::$token_session_name . '" type="hidden" value="' . $token . '" />';
 
             foreach ($this->fields as $name => $element) {
                 if (is_object($element)) {
