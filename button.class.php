@@ -62,6 +62,9 @@
                 case 'button':
                     $this->html .= '<button '.$this->element_attributes.' type ="'.$this->type.'" >'.$this->text.''.$this->icon.'</button>';
                     break;
+                case 'icon_submit':
+                    $this->html .= '<button '.$this->element_attributes.' type ="'.$this->type.'" >'.$this->text.''.$this->icon.'</button>';
+                    break;
             }
 
             return $this->html;
@@ -79,7 +82,13 @@
         protected $tag_type = 'input';
     }
 
-    
+    class icon_submit extends button
+    {
+        protected $type = 'submit';
+        protected $tag_type = 'button';
+    }
+
+
 
 
 
