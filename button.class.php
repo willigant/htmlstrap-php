@@ -79,10 +79,7 @@
         protected $tag_type = 'input';
     }
 
-    class icon extends element
-    {
-
-    }
+    
 
 
 
