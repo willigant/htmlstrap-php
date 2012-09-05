@@ -54,6 +54,15 @@
             }
         }
 
+
+        public function add_class ($class) {
+            $this->add_attribute('class',$class);
+        }
+
+        public function remove_class($class) {
+            $this->remove_attribute('class',$class);
+        }
+
         /*
          * Add attribute
          * @oa	Will
