@@ -18,6 +18,7 @@
      * @todo
      *       //KTD add a license
      *       //KTD add common uses
+     *      //WBN Reorder the stack to how we see fit
      *
      */
 
@@ -167,16 +168,18 @@
          */
         public function hide_columns( /* Array of columns */)
         {
-            $columns_to_hide = func_get_args();
+            if (!empty($this->table_headers)) {
+                $columns_to_hide = func_get_args();
 
-            foreach ($columns_to_hide as $col) {
-                $this->hidden_columns[$col] = $col;
+                foreach ($columns_to_hide as $col) {
+                    $this->hidden_columns[$col] = $col;
 
-                $pos = array_search($col, $this->table_headers);
-                if ($pos) {
-                    unset($this->table_headers[$pos]);
+                    $pos = array_search($col, $this->table_headers);
+                    if (array_key_exists($pos, $this->table_headers)) {
+                        unset($this->table_headers[$pos]);
+                    }
+
                 }
-
             }
 
             return $this;
@@ -214,6 +217,28 @@
 
             return $this;
 
+        }
+
+
+        /**
+         * @author  Will
+         *
+         * @return table
+         */
+        public function make_headers_pretty()
+        {
+
+
+            foreach ($this->table_headers as $key=> $header) {
+
+                $pretty_header = str_replace('_', ' ', $header);
+                $pretty_header = ucwords($pretty_header);
+
+                $this->table_headers[$key] = $pretty_header;
+
+            }
+
+            return $this;
         }
 
 
