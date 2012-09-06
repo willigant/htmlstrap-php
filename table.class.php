@@ -1,17 +1,25 @@
 <?php
-    /*
-    * Class to create tables from an array
-    * @author          Khaliq
-    * @contributor     Will
-    *
-    *
-    * //KTD add a license
-    * //KTD add common uses
-    *
-    * //WBN generic functions to manipulate common data (like dates, hex colors, money) to most readable format
-    * //WBN function to rename TH by key optionally
-    *
-    */
+    /**
+     * @author           Khaliq
+     * @author           Will
+     *
+     * @description      Class to create tables from an array
+     *                   Supports method chaining
+     *
+     * @example
+     *          $messages_table = new table($data)
+     *               ->hide_columns('user_id','updated_at')
+     *               ->rename_column('phone_number','Phone Number')
+     *               ->add_delete_column('/message/remove/')
+     *               ->condensed()
+     *               ->striped();
+     *
+     *
+     * @todo
+     *       //KTD add a license
+     *       //KTD add common uses
+     *
+     */
 
 
     namespace htmlstrap;
@@ -20,53 +28,69 @@
 
     class table extends html
     {
-        protected $data;
+        protected $data, $table_headers;
         protected $hidden_columns = array();
-        protected $primary_key = 'id', $delete_col = FALSE, $delete_url = '';
+        protected $primary_key = 'id';
+        protected $delete_col = FALSE, $delete_url = '';
 
-        /*
-        * Constructor
-        * @oa Khaliq
-        * $data is the array of information to create the table
-        */
+        /**
+         * @author   Khaliq
+         *
+         * @param array $data
+         */
 
         public function __construct($data)
         {
             $this->data = $data;
-            $this->add_attribute('class','table');
+
+            $this->table_headers = $this->keys();
+
+            $this->add_attribute('class', 'table');
         }
 
 
-        //KTD add ability to take away stripes or bordered
-            //->use remove_attribute function
-        //KTD make stripped and bordered the default
-        //KTD add comments to these functions
+        /**
+         * @author  Will
+         */
         public function striped()
         {
-            $this->add_attribute('class','table-striped');
-        }
-        public function bordered()
-        {
-            $this->add_attribute('class','table-bordered');
-        }
-        public function condensed(){
-            $this->add_attribute('class','table-condensed');
+            $this->add_attribute('class', 'table-striped');
+            return $this;
         }
 
-        /*
-        * Render
-        * @author          Khaliq
-        * @contributor     Will
-        *
-        * take the data and create a table
-        *  ->checks hidden colums and doesnt show the ones in the list
-        *
-        *
-        * //WWBN be able to have delete urls with ? query strings
-        * //WBN put warning before delete action
-        * //WBN make aforementioned warning optional
-        *
-        */
+        /**
+         * @author  Will
+         */
+        public function bordered()
+        {
+            $this->add_attribute('class', 'table-bordered');
+            return $this;
+
+        }
+
+        /**
+         * @author  Will
+         */
+        public function condensed()
+        {
+            $this->add_attribute('class', 'table-condensed');
+            return $this;
+        }
+
+        /**
+         * @author          Khaliq
+         * @author          Will
+         *
+         * take the data and create a table
+         *  ->checks hidden colums and doesnt show the ones in the list
+         *
+         *
+         * @todo
+         *      //WWBN be able to have delete urls with ? query strings
+         *      //WBN put warning before delete action
+         *      //WBN make aforementioned warning optional
+         *
+         */
         public function render()
         {
             $keys = $this->keys();
@@ -79,9 +103,9 @@
                 $html .= '<th> &nbsp; </th>';
             }
 
-            foreach ($keys as $key) {
+            foreach ($this->table_headers as $header) {
 
-                $html .= '<th>' . $key . '</th>';
+                $html .= '<th>' . $header . '</th>';
             }
             $html .= '</thead>';
 
@@ -104,17 +128,15 @@
             return $html;
         }
 
-        /*
-        * Find Keys
-        * @author          Will
-        * @description     finds the keys that should be used in TH
-        *
-        * used in render function
-        * checks to see if the keys are in the array of hidden columns
-        *
-        * @returns array of the keys
-        *
-        */
+        /**
+         * @author          Will
+         * @description     finds the keys that should be used in TH
+         *
+         * used in render function
+         * checks to see if the keys are in the array of hidden columns
+         *
+         * @returns array of the keys
+         */
         private function keys()
         {
 
@@ -130,46 +152,71 @@
             return $keys;
         }
 
-        /*
-        * Hide Rows
-        * @author          Will
-        * @description     will not display the cols listed
-        *
-        * adds the keys to an array that is used in render function
-        *
-        * @example
-        * $panel->hide_columns('fb_key', 'fb_app_id', 'fb_secret');
-        *
-        *
-        * //WBN add ability to pass an array as well as an argument
-        *
-        */
+        /**
+         * @author          Will
+         * @description     will not display the cols listed
+         *
+         * adds the keys to an array that is used in render function
+         *
+         * @example
+         * $panel->hide_columns('fb_key', 'fb_app_id', 'fb_secret');
+         *
+         *
+         * @todo
+         *       //WBN add ability to pass an array as well as an argument
+         */
         public function hide_columns( /* Array of columns */)
         {
             $columns_to_hide = func_get_args();
 
             foreach ($columns_to_hide as $col) {
                 $this->hidden_columns[$col] = $col;
+
+                $pos = array_search($col, $this->table_headers);
+                if ($pos) {
+                    unset($this->table_headers[$pos]);
+                }
+
             }
 
-            return TRUE;
+            return $this;
         }
 
-        /*
-        * Add Delete Row
-        * @author      Will
-        * @description Adds a column that will be used to delete the row using the address
-        *
-        *
-        * adds a column with a delte button and the url given with primary key
-        *
-        */
-        public function delete_column($url)
+        /**
+         * @author  Will
+         * @todo
+         *          use keys to keep things straight so we dont unhide doing this
+         *
+         * @param $column_name
+         * @param $new_header
+         *
+         * @return \htmlstrap\table
+         */
+        public function rename_column($column_name, $new_header)
+        {
+            $pos = array_search($column_name, $this->table_headers);
+            if ($pos) {
+                $this->table_headers[$pos] = $new_header;
+            }
+
+            return $this;
+        }
+
+        /**
+         * @author           Will
+         * @description      Adds a column that will be used to delete the row using the address
+         *
+         */
+        public function add_delete_column($url)
         {
             $this->delete_url = $url;
             $this->delete_col = TRUE;
 
+            return $this;
+
         }
+
+
     }
 
 
