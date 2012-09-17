@@ -235,10 +235,9 @@
         * Construct
         * @oa	Will
         */
-        public function __construct($label, $class, $placeholder = FALSE, $max_length = FALSE, $value = FALSE)
+        public function __construct($label, $placeholder = FALSE, $max_length = FALSE, $value = FALSE)
         {
             $this->label       = $label;
-            $this->class       = $class;
             $this->placeholder = $placeholder;
             $this->max_length  = $max_length;
             $this->value       = $value;
@@ -308,9 +307,6 @@
         */
         public function rendered_input($name)
         {
-            if ($this->class){
-                $this->element_attributes .= 'class= "' .$this->class . '"';
-            }
 
             if ($this->max_length) {
                 $this->element_attributes .= ' maxlength= "' . $this->max_length . '"';
