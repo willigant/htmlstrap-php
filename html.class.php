@@ -7,7 +7,7 @@
      * when we are creating html elements, this is a good base class
      *
      */
-    namespace htmlstrap;
+    namespace willwashburn;
 
     abstract class html
     {
@@ -22,11 +22,8 @@
         * @return string of the attribute
         * eg  class = "classname otherclass"
         *
-        * //WWBN add ability to overwrite attribute name in string
-        * eg change "form_class" to just "class"
-        *
         */
-        protected function attributize($attribute, $data = FALSE)
+        protected function attributize($attribute, $data = FALSE,$overwrite_attribute_name = false)
         {
             if (!$data) {
                 if (isset($this->$attribute)) {
@@ -36,8 +33,15 @@
                 }
             }
 
+            if (!$overwrite_attribute_name) {
+                $attribute_name = $overwrite_attribute_name;
+            } else {
+                $attribute_name = $attribute;
+            }
+
+
             if ($data) {
-                $string_to_return = ' ' . $attribute . '="';
+                $string_to_return = ' ' . $attribute_name . '="';
                 if (is_string($data)) {
                     $string_to_return .= $data;
                 } elseif (is_array($data)) {
@@ -55,26 +59,26 @@
         }
 
 
-        public function add_class ($class) {
+        public function addClass ($class) {
             $this->add_attribute('class',$class);
         }
 
-        public function remove_class($class) {
+        public function removeClass($class) {
             $this->remove_attribute('class',$class);
         }
 
-        /*
-         * Add attribute
-         * @oa	Will
-         *
+        /**
          * add to an array of what will be an html attribute string
+         * @author	Will Washburn
+         *
+         * @example
          *
          * eg add 'class',' foo' and 'class','bar' and when you call attributize it will make it
          * class ="foo bar"
          *
          *
          */
-        protected function add_attribute($attribute_name, $attribute)
+        protected function addAttribute($attribute_name, $attribute)
         {
             if (is_array($this->$attribute_name)) {
                 $add = array($attribute => $attribute);
@@ -84,13 +88,13 @@
             }
         }
 
-        /*
+        /**
          * Remove attribute
-         *
          * removes specific attribute from created attribute array
+         * @author  Will Washburn
          *
          */
-        protected function remove_attribute($attribute_name, $attribute)
+        protected function removeAttribute($attribute_name, $attribute)
         {
             if (isset($this->$attribute_name[$attribute])) {
                 unset($this->$attribute_name[$attribute]);
