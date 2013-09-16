@@ -15,7 +15,7 @@
             "email": "khaliq@willigant.com",
             "homepage": "http://khaliqgant.com",
             "role": "Developer"
-        },
+        }
     ],
     "license": "MIT",
     "require": {
