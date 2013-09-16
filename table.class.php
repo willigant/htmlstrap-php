@@ -23,7 +23,7 @@
      */
 
 
-    namespace htmlstrap;
+    namespace willwashbrun;
 
     require_once 'html.class.php';
 

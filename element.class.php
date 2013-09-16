@@ -1,9 +1,9 @@
 <?php
-    namespace htmlstrap;
+    namespace willwashburn;
 
     /*
     * All form elements
-    * @oa Will
+    * @author Will
     *
     * //WBN add mouseevents / handlers
     * //WBN add required / optional

@@ -11,7 +11,7 @@
     *
     */
 
-    namespace htmlstrap;
+    namespace willwashburn;
 
     include_once 'table.class.php';
 

@@ -1,6 +1,6 @@
 <?php
 
-    namespace htmlstrap;
+    namespace willwashburn;
 
     /**
      * Buttons

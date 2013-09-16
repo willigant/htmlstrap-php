@@ -35,7 +35,7 @@
     */
 
 
-    namespace htmlstrap;
+    namespace willwashburn;
 
     require_once 'html.class.php';
     require_once 'element.class.php';

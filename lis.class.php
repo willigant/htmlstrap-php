@@ -8,7 +8,7 @@
      *
      */
 
-    namespace htmlstrap;
+    namespace willwashburn;
 
     require_once 'html.class.php';
 
