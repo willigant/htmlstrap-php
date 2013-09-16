@@ -37,7 +37,7 @@ class table extends html
     /**
      * @author   Khaliq
      *
-     * @param array|bool $data
+     * @param array $data
      */
 
     public function __construct($data = false)
@@ -68,11 +68,31 @@ class table extends html
      * @author           Will
      * @description      Adds a column that will be used to delete the row using the address
      *
+     * @return $this
      */
     public function addDeleteColumn($url)
     {
         $this->delete_url = $url;
         $this->delete_col = true;
+
+        return $this;
+
+    }
+
+    /**
+     * @author  Will
+     *
+     * @param array $row
+     */
+    public function addRow(Array $row, $row_key = false)
+    {
+        if ($row_key) {
+            $this->data[$row_key] = $row;
+
+            return $this;
+        }
+
+        $this->data[] = $row;
 
         return $this;
 
@@ -188,7 +208,7 @@ class table extends html
      */
     public function render()
     {
-        $keys = $this->keys();
+        $keys = $this->table_headers = $this->keys();
 
         $this->attributize('class');
         $html = '<table ' . $this->class . '>';
@@ -256,5 +276,9 @@ class table extends html
         }
 
         return $keys;
+    }
+
+    public function getData() {
+        return $this->data;
     }
 }

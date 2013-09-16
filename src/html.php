@@ -89,12 +89,11 @@ abstract class html
             }
         }
 
-        if (!$overwrite_attribute_name) {
+        if ($overwrite_attribute_name) {
             $attribute_name = $overwrite_attribute_name;
         } else {
             $attribute_name = $attribute;
         }
-
 
         if ($data) {
             $string_to_return = ' ' . $attribute_name . '="';
