@@ -37,16 +37,31 @@ class table extends html
     /**
      * @author   Khaliq
      *
-     * @param array $data
+     * @param array|bool $data
      */
 
-    public function __construct($data)
+    public function __construct($data = false)
     {
-        $this->data = $data;
-
-        $this->table_headers = $this->keys();
+        if ($data) {
+            $this->addData($data);
+        }
 
         $this->addAttribute('class', 'table');
+    }
+
+    /**
+     * @author  Will
+     *
+     * @param $data
+     *
+     * @return $this
+     */
+    public function addData($data)
+    {
+        $this->data          = $data;
+        $this->table_headers = $this->keys();
+
+        return $this;
     }
 
     /**
