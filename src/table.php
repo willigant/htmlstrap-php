@@ -34,6 +34,8 @@ class table extends html
     protected $hidden_columns = array();
     protected $primary_key = 'id';
 
+    protected $render_attributes_list = array('class','id');
+
     /**
      * @author   Khaliq
      *
@@ -117,6 +119,11 @@ class table extends html
         $this->addAttribute('class', 'table-condensed');
 
         return $this;
+    }
+
+    public function getData()
+    {
+        return $this->data;
     }
 
     /**
@@ -210,8 +217,13 @@ class table extends html
     {
         $keys = $this->table_headers = $this->keys();
 
-        $this->attributize('class');
-        $html = '<table ' . $this->class . '>';
+        $html = '<table ';
+
+        foreach ($this->render_attributes_list as $attribute) {
+            $this->attributize($attribute);
+            $html .= $this->$attribute . ' ';
+        }
+        $html .= '>';
         $html .= '<thead>';
 
         if ($this->delete_col) {
@@ -276,9 +288,5 @@ class table extends html
         }
 
         return $keys;
-    }
-
-    public function getData() {
-        return $this->data;
     }
 }
