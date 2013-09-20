@@ -106,8 +106,9 @@ abstract class html
                 $string_to_return .= $data;
             } elseif (is_array($data)) {
                 foreach ($data as $key => $value) {
-                    $string_to_return .= ' ' . $value;
+                    $string_to_return .= $value.' ';
                 }
+                $string_to_return = rtrim($string_to_return,' ');
             } else {
                 $this->$attribute = '';
             }
@@ -116,6 +117,7 @@ abstract class html
         } else {
             $this->$attribute = '';
         }
+
     }
 
     /**
