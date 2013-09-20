@@ -36,6 +36,11 @@ abstract class html
         $this->removeAttribute('class', $class);
     }
 
+    public function setId($id)
+    {
+        $this->addAttribute('id', $id);
+    }
+
     /**
      * add to an array of what will be an html attribute string
      *
