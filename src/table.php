@@ -235,6 +235,7 @@ class table extends html
             $html .= '<th>' . $header . '</th>';
         }
         $html .= '</thead>';
+        $html .= '<tbody>';
 
         foreach ($this->data as $rows) {
             $html .= '<tr>';
@@ -248,8 +249,9 @@ class table extends html
                     $html .= '<td>' . $value . '</td>';
                 }
             }
+            $html .= '</tr>';
         }
-        $html .= '</tr>';
+        $html .= '</tbody>';
         $html .= '</table>';
 
         return $html;
