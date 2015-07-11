@@ -1,14 +1,4 @@
-<?php
-
-/*
- * Create OL or UL (Lists)
- * @author Will
- *
- * I couldn't use list since it's already used by php so I went with lis.. as in multiple list items (li s)
- *
- */
-
-namespace willwashburn;
+<?php  namespace WilliGant;
 
 class lis extends html
 {

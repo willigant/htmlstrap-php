@@ -1,29 +1,4 @@
-<?php
-/**
- * @author           Khaliq
- * @author           Will
- *
- * @description      Class to create tables from an array
- *                   Supports method chaining
- *
- * @example
- *          $messages_table = new table($data)
- *               ->hide_columns('user_id','updated_at')
- *               ->rename_column('phone_number','Phone Number')
- *               ->add_delete_column('/message/remove/')
- *               ->condensed()
- *               ->striped();
- *
- *
- * @todo
- *       //KTD add a license
- *       //KTD add common uses
- *      //WBN Reorder the stack to how we see fit
- *
- */
-
-
-namespace willwashburn;
+<?php namespace WilliGant;
 
 class table extends html
 {

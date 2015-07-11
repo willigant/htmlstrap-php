@@ -1,6 +1,4 @@
-<?php
-
-namespace willwashburn;
+<?php  namespace WilliGant;
 
 /*
 * Checkbox Elements

@@ -1,6 +1,6 @@
 <?php
 
-namespace willwashburn;
+namespace WilliGant;
 
 /**
  * Buttons

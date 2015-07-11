@@ -1,6 +1,4 @@
-<?php
-
-namespace willwashburn;
+<?php  namespace WilliGant;
 
 class text extends element
 {
