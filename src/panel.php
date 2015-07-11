@@ -1,37 +1,9 @@
-<?php
-/*
-* Created by Khaliq Gant
-* Date: 6/12/12
-* Time: 3:09 PM
-* @use to make a panel table quickly
-* @description
-*
-*
-* //KTD put comments on the functions that describe what they do, what they are expected to return etc
-*
-*/
+<?php namespace WilliGant;
 
-namespace willwashburn;
 use Exception;
 
 class panel extends table
 {
-
-    /**
-     * Render
-     *
-     * @author          Khaliq
-     * @author          Will
-     *
-     * take the data and create a table
-     *  ->checks hidden colums and doesnt show the ones in the list
-     *
-     */
-    public function addForm()
-    {
-    }
-
-
     /**
     * Panel Delete row
     * @author Will

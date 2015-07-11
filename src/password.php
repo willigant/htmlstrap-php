@@ -1,6 +1,4 @@
-<?php
-
-namespace willwashburn;
+<?php  namespace WilliGant;
 
 /**
 * Password Elements

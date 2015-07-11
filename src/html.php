@@ -1,13 +1,4 @@
-<?php
-
-/*
- * Abstract Html Class
- * @author Will
- *
- * when we are creating html elements, this is a good base class
- *
- */
-namespace willwashburn;
+<?php namespace WilliGant;
 
 abstract class html
 {

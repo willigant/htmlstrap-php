@@ -1,12 +1,4 @@
-<?php
-
-namespace willwashburn;
-
-/*
-* Text Area
-* @author Will
-*
-*/
+<?php namespace WilliGant;
 
 class textarea extends text
 {

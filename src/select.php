@@ -1,5 +1,4 @@
-<?php
-namespace willwashburn;
+<?php namespace WilliGant;
 
 
 class select extends option
